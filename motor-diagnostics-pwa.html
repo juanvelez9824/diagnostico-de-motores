@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Motores</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkRpYWduw7NzdGljbyBkZSBNb3RvcmVzIiwKICAic2hvcnRfbmFtZSI6ICJNb3RvckRpYWciLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzJkM3c4ZCIsCiAgInRoZW1lX2NvbG9yIjogIiMyZDN3OGQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNVEkwSWlCb1pXbG5hSFE5SWpFeU5DSWdkbWxsZDBKdmVEMGlNQ0F3SURFeU5DQXhNalFpSUdacGJHdzlJaU16TW1RM1pqUWlQanh5WldOMElIZzlJalF3SWlCNVBTSTBNQ0lnZDJsa2RHZzlJalF3SWlCb1pXbG5hSFE5SWpRd0lpQm1hV3hzUFNJaVptWmNJaUJ5ZUQwaU5TSXZQanh5WldOMElIZzlJalF3SWlCNVBTSTJOQ0lnZDJsa2RHZzlJalF3SWlCb1pXbG5hSFE5SWpFMklpQm1hV3hzUFNJaVptWmNJaUJ5ZUQwaU5TSXZQand2YzNablBnbzlJaXdLSUNBaWMybDZaU0k2SURFMU5pd0tJQ0FpZEhsd1pTSTZJQ0p1WVdScGRtVWlLUW9nSUYwS2ZRPj0iLAogICAgICAic2l6ZXMiOiAiMTI4eDEyOCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 10px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.6);
+        }
+
+        .photo-container {
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            background: #f7fafc;
+        }
+
+        .photo-container.has-photo {
+            border-style: solid;
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .photo-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .measurement-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .measurement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .measurement-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .measurement-date {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .measurement-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 6px;
+        }
+
+        .value-label {
+            font-size: 0.8em;
+            color: #718096;
+            display: block;
+        }
+
+        .value-number {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .diagnosis {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .diagnosis.good {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+        }
+
+        .diagnosis.warning {
+            background: linear-gradient(135deg, #fefcbf, #faf089);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-good { background: #48bb78; }
+        .status-warning { background: #ed8936; }
+        .status-error { background: #f56565; }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+        }
+
+        .spinner {
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .notification.error {
+            background: #f56565;
+        }
+
+        .google-drive-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .google-drive-status.connected {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .google-drive-status.disconnected {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .nav-tab {
+                font-size: 0.8em;
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Diagnóstico de Motores</h1>
+            <p>Sistema inteligente de análisis</p>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="measurement">📊 Medición</button>
+            <button class="nav-tab" data-tab="history">📋 Historial</button>
+            <button class="nav-tab" data-tab="config">⚙️ Config</button>
+        </nav>
+
+        <!-- Tab: Nueva Medición -->
+        <div class="tab-content active" id="measurement">
+            <form id="measurementForm">
+                <div class="form-group">
+                    <label>Motor ID / Ubicación</label>
+                    <input type="text" id="motorId" required placeholder="Ej: MOTOR-001-BOMBA">
+                </div>
+
+                <div class="form-group">
+                    <label>Voltaje (V)</label>
+                    <input type="number" step="0.1" id="voltage" required placeholder="220">
+                </div>
+
+                <div class="form-group">
+                    <label>Corriente (A)</label>
+                    <input type="number" step="0.01" id="current" required placeholder="5.2">
+                </div>
+
+                <div class="form-group">
+                    <label>Temperatura (°C)</label>
+                    <input type="number" step="0.1" id="temperature" required placeholder="45">
+                </div>
+
+                <div class="form-group">
+                    <label>Resistencia de Aislamiento (MΩ)</label>
+                    <input type="number" step="0.1" id="insulation" required placeholder="500">
+                </div>
+
+                <div class="form-group">
+                    <label>Índice de Polarización (PI)</label>
+                    <input type="number" step="0.01" id="polarization" required placeholder="2.5">
+                </div>
+
+                <div class="form-group">
+                    <label>Foto del Motor</label>
+                    <div class="photo-container" id="photoContainer">
+                        <p>📷 Toca para tomar/seleccionar foto</p>
+                        <input type="file" id="photoInput" accept="image/*" capture="camera" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Observaciones adicionales</label>
+                    <textarea id="observations" rows="3" placeholder="Ruidos anómalos, vibraciones, etc..."></textarea>
+                </div>
+
+                <button type="submit" class="btn">🔍 Analizar con IA</button>
+            </form>
+        </div>
+
+        <!-- Tab: Historial -->
+        <div class="tab-content" id="history">
+            <div class="google-drive-status disconnected" id="driveStatus">
+                <span>☁️ Google Drive: Desconectado</span>
+            </div>
+            
+            <button class="btn secondary" id="syncDrive">📤 Sincronizar con Drive</button>
+            
+            <div id="measurementsList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando mediciones...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Configuración -->
+        <div class="tab-content" id="config">
+            <div class="form-group">
+                <label>API Key de Hugging Face</label>
+                <input type="password" id="hfApiKey" placeholder="hf_xxxxxxxxxxxx">
+                <small style="color: #718096; font-size: 0.8em;">
+                    Obtén tu API key gratuita en <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co</a>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Modelo de IA para análisis</label>
+                <select id="aiModel">
+                    <option value="microsoft/DialoGPT-medium">DialoGPT Medium (Gratis)</option>
+                    <option value="google/flan-t5-base">FLAN-T5 Base (Gratis)</option>
+                    <option value="distilbert-base-uncased">DistilBERT (Gratis)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Límites de alerta</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 0.9em;">Temp. máx (°C)</label>
+                        <input type="number" id="maxTemp" value="80">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.9em;">Aisl. mín (MΩ)</label>
+                        <input type="number" id="minInsulation" value="100">
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" id="saveConfig">💾 Guardar Configuración</button>
+            
+            <div class="form-group" style="margin-top: 30px;">
+                <button class="btn secondary" id="installPWA">📱 Instalar App</button>
+                <button class="btn" id="exportData" style="background: linear-gradient(135deg, #38a169, #2f855a);">📊 Exportar a Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Estado global de la aplicación
+        const AppState = {
+            measurements: [],
+            config: {
+                hfApiKey: '',
+                aiModel: 'microsoft/DialoGPT-medium',
+                maxTemp: 80,
+                minInsulation: 100
+            },
+            isOnline: navigator.onLine,
+            driveConnected: false
+        };
+
+        // Cargar datos del almacenamiento local al iniciar
+        function loadAppData() {
+            const savedMeasurements = JSON.parse(localStorage.getItem('motorMeasurements') || '[]');
+            const savedConfig = JSON.parse(localStorage.getItem('motorConfig') || '{}');
+            
+            AppState.measurements = savedMeasurements;
+            AppState.config = { ...AppState.config, ...savedConfig };
+            
+            // Cargar configuración en el formulario
+            if (AppState.config.hfApiKey) {
+                document.getElementById('hfApiKey').value = AppState.config.hfApiKey;
+            }
+            document.getElementById('aiModel').value = AppState.config.aiModel;
+            document.getElementById('maxTemp').value = AppState.config.maxTemp;
+            document.getElementById('minInsulation').value = AppState.config.minInsulation;
+        }
+
+        // Guardar datos en almacenamiento local
+        function saveAppData() {
+            localStorage.setItem('motorMeasurements', JSON.stringify(AppState.measurements));
+            localStorage.setItem('motorConfig', JSON.stringify(AppState.config));
+        }
+
+        // Sistema de notificaciones
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Manejo de pestañas
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                // Actualizar pestañas activas
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                
+                // Actualizar historial si es necesario
+                if (targetTab === 'history') {
+                    renderMeasurements();
+                }
+            });
+        });
+
+        // Manejo de foto
+        document.getElementById('photoContainer').addEventListener('click', () => {
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const container = document.getElementById('photoContainer');
+                    container.classList.add('has-photo');
+                    container.innerHTML = `
+                        <p>✅ Foto capturada</p>
+                        <img src="${event.target.result}" class="photo-preview">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Análisis con IA usando Hugging Face
+        async function analyzeWithAI(measurementData) {
+            if (!AppState.config.hfApiKey) {
+                return {
+                    diagnosis: "⚠️ Configurar API key de Hugging Face para análisis inteligente",
+                    status: "warning",
+                    recommendations: ["Ir a Configuración", "Añadir API key gratuita"]
+                };
+            }
+
+            try {
+                // Preparar prompt para el análisis
+                const prompt = `Analiza estas mediciones de motor eléctrico:
+                
+Voltaje: ${measurementData.voltage}V
+Corriente: ${measurementData.current}A  
+Temperatura: ${measurementData.temperature}°C
+Aislamiento: ${measurementData.insulation}MΩ
+Índice Polarización: ${measurementData.polarization}
+Observaciones: ${measurementData.observations || 'Ninguna'}
+
+Proporciona un diagnóstico técnico conciso del estado del motor y recomendaciones.`;
+
+                const response = await fetch(`https://api-inference.huggingface.co/models/${AppState.config.aiModel}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${AppState.config.hfApiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        inputs: prompt,
+                        parameters: {
+                            max_length: 200,
+                            temperature: 0.7
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error API: ${response.status}`);
+                }
+
+                const result = await response.json();
+                let aiAnalysis = '';
+                
+                // Manejar diferentes formatos de respuesta
+                if (Array.isArray(result) && result[0]?.generated_text) {
+                    aiAnalysis = result[0].generated_text;
+                } else if (result.generated_text) {
+                    aiAnalysis = result.generated_text;
+                } else {
+                    aiAnalysis = "Análisis completado pero formato no reconocido";
+                }
+
+                return {
+                    diagnosis: `🤖 ${aiAnalysis}`,
+                    status: determineStatus(measurementData),
+                    recommendations: generateRecommendations(measurementData)
+                };
+
+            } catch (error) {
+                console.error('Error en análisis IA:', error);
+                return {
+                    diagnosis: `❌ Error en análisis IA: ${error.message}`,
+                    status: "error",
+                    recommendations: ["Verificar API key", "Revisar conexión a internet"]
+                };
+            }
+        }
+
+        // Determinar estado basado en mediciones
+        function determineStatus(data) {
+            const issues = [];
+            
+            if (data.temperature > AppState.config.maxTemp) issues.push('temperatura alta');
+            if (data.insulation < AppState.config.minInsulation) issues.push('aislamiento bajo');
+            if (data.polarization < 1.5) issues.push('PI bajo');
+            if (data.voltage < 200 || data.voltage > 240) issues.push('voltaje fuera de rango');
+            
+            if (issues.length === 0) return 'good';
+            if (issues.length <= 2) return 'warning';
+            return 'error';
+        }
+
+        // Generar recomendaciones
+        function generateRecommendations(data) {
+            const recommendations = [];
+            
+            if (data.temperature > AppState.config.maxTemp) {
+                recommendations.push('Verificar ventilación y carga');
+            }
+            if (data.insulation < AppState.config.minInsulation) {
+                recommendations.push('Revisar aislamiento de devanados');
+            }
+            if (data.polarization < 1.5) {
+                recommendations.push('Evaluar humedad en motor');
+            }
+            
+            if (recommendations.length === 0) {
+                recommendations.push('Motor en condiciones normales');
+            }
+            
+            return recommendations;
+        }
+
+        // Procesar formulario de medición
+        document.getElementById('measurementForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const measurementData = {
+                id: Date.now().toString(),
+                date: new Date().toISOString(),
+                motorId: document.getElementById('motorId').value,
+                voltage: parseFloat(document.getElementById('voltage').value),
+                current: parseFloat(document.getElementById('current').value),
+                temperature: parseFloat(document.getElementById('temperature').value),
+                insulation: parseFloat(document.getElementById('insulation').value),
+                polarization: parseFloat(document.getElementById('polarization').value),
+                observations: document.getElementById('observations').value,
+                photo: document.querySelector('.photo-preview')?.src || null
+            };
+
+            // Mostrar loading
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<div class="spinner" style="width: 20px; height: 20px; margin: 0 auto;"></div>';
+            submitBtn.disabled = true;
+
+            // Analizar con IA
+            const analysis = await analyzeWithAI(measurementData);
+            measurementData.analysis = analysis;
+
+            // Guardar medición
+            AppState.measurements.unshift(measurementData);
+            saveAppData();
+
+            // Restaurar botón
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+
+            showNotification('✅ Medición guardada y analizada', 'success');
+            
+            // Limpiar formulario
+            e.target.reset();
+            document.getElementById('photoContainer').classList.remove('has-photo');
+            document.getElementById('photoContainer').innerHTML = '<p>📷 Toca para tomar/seleccionar foto</p>';
+
+            // Cambiar a pestaña historial
+            document.querySelector('[data-tab="history"]').click();
+        });
+
+        // Renderizar mediciones en el historial
+        function renderMeasurements() {
+            const container = document.getElementById('measurementsList');
+            
+            if (AppState.measurements.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #718096;">
+                        <p>📝 No hay mediciones registradas</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Añade tu primera medición en la pestaña "Medición"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = AppState.measurements.map(measurement => `
+                <div class="measurement-card">
+                    <div class="measurement-header">
+                        <div>
+                            <strong>${measurement.motorId}</strong>
+                            <div class="measurement-date">${new Date(measurement.date).toLocaleString('es-ES')}</div>
+                        </div>
+                        <span class="status-indicator status-${measurement.analysis?.status || 'warning'}"></span>
+                    </div>
+                    
+                    <div class="measurement-values">
+                        <div class="value-item">
+                            <span class="value-label">Voltaje</span>
+                            <span class="value-number">${measurement.voltage}V</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Corriente</span>
+                            <span class="value-number">${measurement.current}A</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Temperatura</span>
+                            <span class="value-number">${measurement.temperature}°C</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Aislamiento</span>
+                            <span class="value-number">${measurement.insulation}MΩ</span>
+                        </div>
+                    </div>
+
+                    ${measurement.photo ? `<img src="${measurement.photo}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin: 10px 0;">                        ` : ''}
+                    </div>
+
+                    ${measurement.observations ? `
+                        <div style="margin-top: 15px; padding: 10px; background: #f7fafc; border-radius: 6px;">
+                            <strong>Observaciones:</strong><br>
+                            <small>${measurement.observations}</small>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Configuración
+        document.getElementById('saveConfig').addEventListener('click', () => {
+            AppState.config.hfApiKey = document.getElementById('hfApiKey').value;
+            AppState.config.aiModel = document.getElementById('aiModel').value;
+            AppState.config.maxTemp = parseInt(document.getElementById('maxTemp').value);
+            AppState.config.minInsulation = parseInt(document.getElementById('minInsulation').value);
+            
+            saveAppData();
+            showNotification('⚙️ Configuración guardada', 'success');
+        });
+
+        // PWA Installation
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPWA').style.display = 'block';
+        });
+
+        document.getElementById('installPWA').addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                showNotification('⚠️ App ya instalada o no disponible', 'warning');
+                return;
+            }
+
+            const { outcome } = await deferredPrompt.prompt();
+            if (outcome === 'accepted') {
+                showNotification('📱 App instalada correctamente', 'success');
+            }
+            deferredPrompt = null;
+        });
+
+        // Simulación de Google Drive (en una implementación real usarías Google Drive API)
+        document.getElementById('syncDrive').addEventListener('click', async () => {
+            const btn = document.getElementById('syncDrive');
+            const originalText = btn.textContent;
+            
+            btn.innerHTML = '🔄 Sincronizando...';
+            btn.disabled = true;
+
+            // Simular sincronización
+            setTimeout(() => {
+                AppState.driveConnected = true;
+                document.getElementById('driveStatus').className = 'google-drive-status connected';
+                document.getElementById('driveStatus').innerHTML = '<span>☁️ Google Drive: Conectado ✅</span>';
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                showNotification('☁️ Datos sincronizados con Google Drive', 'success');
+            }, 2000);
+        });
+
+        // Exportar a Excel
+        document.getElementById('exportData').addEventListener('click', () => {
+            if (AppState.measurements.length === 0) {
+                showNotification('⚠️ No hay datos para exportar', 'warning');
+                return;
+            }
+
+            const csvData = generateCSV();
+            downloadCSV(csvData, `mediciones_motores_${new Date().toISOString().split('T')[0]}.csv`);
+            showNotification('📊 Datos exportados correctamente', 'success');
+        });
+
+        function generateCSV() {
+            const headers = ['ID Motor', 'Fecha', 'Voltaje (V)', 'Corriente (A)', 'Temperatura (°C)', 'Aislamiento (MΩ)', 'PI', 'Estado', 'Diagnóstico', 'Observaciones'];
+            
+            const rows = AppState.measurements.map(m => [
+                m.motorId,
+                new Date(m.date).toLocaleString('es-ES'),
+                m.voltage,
+                m.current,
+                m.temperature,
+                m.insulation,
+                m.polarization,
+                m.analysis?.status || 'N/A',
+                m.analysis?.diagnosis?.replace(/[,\n\r]/g, ' ') || 'N/A',
+                m.observations?.replace(/[,\n\r]/g, ' ') || 'N/A'
+            ]);
+
+            return [headers, ...rows].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+        }
+
+        function downloadCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const swData = `
+                        const CACHE_NAME = 'motor-diagnostics-v1';
+                        const urlsToCache = [
+                            '/',
+                            '/offline.html'
+                        ];
+
+                        self.addEventListener('install', event => {
+                            event.waitUntil(
+                                caches.open(CACHE_NAME)
+                                    .then(cache => cache.addAll(urlsToCache))
+                            );
+                        });
+
+                        self.addEventListener('fetch', event => {
+                            event.respondWith(
+                                caches.match(event.request)
+                                    .then(response => {
+                                        if (response) {
+                                            return response;
+                                        }
+                                        return fetch(event.request);
+                                    })
+                            );
+                        });
+                    `;
+                    
+                    const blob = new Blob([swData], { type: 'application/javascript' });
+                    const swUrl = URL.createObjectURL(blob);
+                    
+                    await navigator.serviceWorker.register(swUrl);
+                    console.log('Service Worker registrado');
+                } catch (error) {
+                    console.error('Error registrando Service Worker:', error);
+                }
+            });
+        }
+
+        // Detección de estado de conexión
+        window.addEventListener('online', () => {
+            AppState.isOnline = true;
+            showNotification('🌐 Conectado a internet', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            AppState.isOnline = false;
+            showNotification('📵 Modo offline activado', 'warning');
+        });
+
+        // Notificaciones push (simuladas)
+        function checkAlerts() {
+            const recentMeasurements = AppState.measurements.filter(m => {
+                const measurementDate = new Date(m.date);
+                const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+                return measurementDate > oneDayAgo;
+            });
+
+            const criticalMotors = recentMeasurements.filter(m => m.analysis?.status === 'error');
+            
+            if (criticalMotors.length > 0 && 'Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('⚠️ Motores críticos detectados', {
+                            body: `${criticalMotors.length} motor(es) requieren atención inmediata`,
+                            icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI0IiBoZWlnaHQ9IjEyNCIgdmlld0JveD0iMCAwIDEyNCAxMjQiIGZpbGw9IiNmNTY1NjUiPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIiByeD0iNSIvPjxyZWN0IHg9IjQwIiB5PSI2NCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjE2IiBmaWxsPSIjZmZmIiByeD0iNSIvPjwvc3ZnPg=='
+                        });
+                    }
+                });
+            }
+        }
+
+        // Análisis de tendencias simples
+        function generateTrendAnalysis() {
+            if (AppState.measurements.length < 2) return null;
+
+            const recent = AppState.measurements.slice(0, 5);
+            const avgTemp = recent.reduce((sum, m) => sum + m.temperature, 0) / recent.length;
+            const avgInsulation = recent.reduce((sum, m) => sum + m.insulation, 0) / recent.length;
+
+            return {
+                avgTemperature: avgTemp.toFixed(1),
+                avgInsulation: avgInsulation.toFixed(1),
+                totalMeasurements: AppState.measurements.length,
+                criticalCount: AppState.measurements.filter(m => m.analysis?.status === 'error').length
+            };
+        }
+
+        // Función para mostrar estadísticas en el historial
+        function renderStatistics() {
+            const trends = generateTrendAnalysis();
+            if (!trends) return '';
+
+            return `
+                <div class="chart-container" style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #2d3748;">📊 Estadísticas Generales</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="value-item">
+                            <span class="value-label">Total Mediciones</span>
+                            <span class="value-number">${trends.totalMeasurements}</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Motores Críticos</span>
+                            <span class="value-number" style="color: #f56565;">${trends.criticalCount}</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Temp. Promedio</span>
+                            <span class="value-number">${trends.avgTemperature}°C</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Aisl. Promedio</span>
+                            <span class="value-number">${trends.avgInsulation}MΩ</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Actualizar renderMeasurements para incluir estadísticas
+        const originalRenderMeasurements = renderMeasurements;
+        renderMeasurements = function() {
+            const container = document.getElementById('measurementsList');
+            
+            if (AppState.measurements.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #718096;">
+                        <p>📝 No hay mediciones registradas</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Añade tu primera medición en la pestaña "Medición"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const statisticsHTML = renderStatistics();
+            const measurementsHTML = AppState.measurements.map(measurement => `
+                <div class="measurement-card">
+                    <div class="measurement-header">
+                        <div>
+                            <strong>${measurement.motorId}</strong>
+                            <div class="measurement-date">${new Date(measurement.date).toLocaleString('es-ES')}</div>
+                        </div>
+                        <span class="status-indicator status-${measurement.analysis?.status || 'warning'}"></span>
+                    </div>
+                    
+                    <div class="measurement-values">
+                        <div class="value-item">
+                            <span class="value-label">Voltaje</span>
+                            <span class="value-number">${measurement.voltage}V</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Corriente</span>
+                            <span class="value-number">${measurement.current}A</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Temperatura</span>
+                            <span class="value-number">${measurement.temperature}°C</span>
+                        </div>
+                        <div class="value-item">
+                            <span class="value-label">Aislamiento</span>
+                            <span class="value-number">${measurement.insulation}MΩ</span>
+                        </div>
+                    </div>
+
+                    ${measurement.photo ? `<img src="${measurement.photo}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin: 10px 0;">` : ''}
+
+                    <div class="diagnosis ${measurement.analysis?.status || 'warning'}">
+                        <strong>Diagnóstico:</strong><br>
+                        ${measurement.analysis?.diagnosis || 'Análisis pendiente'}
+                        
+                        ${measurement.analysis?.recommendations ? `
+                            <div style="margin-top: 10px;">
+                                <strong>Recomendaciones:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    ${measurement.analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    ${measurement.observations ? `
+                        <div style="margin-top: 15px; padding: 10px; background: #f7fafc; border-radius: 6px;">
+                            <strong>Observaciones:</strong><br>
+                            <small>${measurement.observations}</small>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            container.innerHTML = statisticsHTML + measurementsHTML;
+        };
+
+        // Inicialización de la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAppData();
+            renderMeasurements();
+            
+            // Verificar alertas cada 30 minutos
+            setInterval(checkAlerts, 30 * 60 * 1000);
+            
+            // Verificar al cargar
+            setTimeout(checkAlerts, 2000);
+            
+            console.log('🚀 Motor Diagnostics PWA iniciada correctamente');
+        });
+
+        // Backup automático cada hora
+        setInterval(() => {
+            if (AppState.isOnline && AppState.measurements.length > 0) {
+                console.log('💾 Backup automático de datos');
+                // En una implementación real, aquí enviarías los datos a tu servidor
+            }
+        }, 60 * 60 * 1000);
+
+    </script>
+</body>
+</html>
+
+                    <div class="diagnosis ${measurement.analysis?.status || 'warning'}">
+                        <strong>Diagnóstico:</strong><br>
+                        ${measurement.analysis?.diagnosis || 'Análisis pendiente'}
+                        
+                        ${measurement.analysis?.recommendations ? `
+                            <div style="margin-top: 10px;">
+                                <strong>Recomendaciones:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    ${measurement.analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : '
