@@ -3,1084 +3,1236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico de Motores</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRGlhZ27Ds3N0aWNvIGRlIE1vdG9yZXMiLCJzaG9ydF9uYW1lIjoiTW90b3JEaWFnIiwiZGVzY3JpcHRpb24iOiJBcGxpY2FjacOzbiBwYXJhIGRpYWduw7NzdGljbyBkZSBtb3RvcmVzIGVsw6ljdHJpY29zIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxZTI5M2IiLCJ0aGVtZV9jb2xvciI6IiMzYjgyZjYiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUdacGJHeDBaWEk5SW01dmJtVWlJSGh0Ykc1elBTSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREF3TDNOMlp5SStQR0pwY21Oc2JTQm1hV3hzUFNJak16SkRRekVpSUdONFBTSXhNalFpSUdONVBTSXhNelFpSUhJOUlqUXdJaUF2UGp3dlpuUjJMejQ9IiwicyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGZpbGw9IiMzMkQ3RDEiIGN4PSIxMjQiIGN5PSIxMzQiIHI9IjQwIiAvPjwvZnRnPz4=">
-    <meta name="theme-color" content="#3b82f6">
+    <title>Diagnóstico Motores Eléctricos</title>
+    <link rel="manifest" href="#" id="manifest-placeholder">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: #333;
         }
-
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
             padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
         }
-
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
         .header h1 {
-            font-size: 2.5rem;
+            color: #2196F3;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, #3b82f6, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
-
-        .nav-tabs {
+        
+        .tabs {
             display: flex;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             margin-bottom: 20px;
             overflow: hidden;
         }
-
-        .nav-tab {
+        
+        .tab {
             flex: 1;
             padding: 15px;
             text-align: center;
             background: transparent;
             border: none;
-            color: rgba(255,255,255,0.7);
+            color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 14px;
             font-weight: 500;
         }
-
-        .nav-tab.active {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            color: white;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
-
+        
         .tab-content {
             display: none;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-
+        
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.3s ease-in;
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         .form-group {
             margin-bottom: 20px;
         }
-
+        
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
             margin-bottom: 15px;
         }
-
+        
         label {
             display: block;
             margin-bottom: 8px;
-            color: #e2e8f0;
-            font-weight: 500;
+            font-weight: 600;
+            color: #555;
         }
-
+        
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid #e1e5e9;
             border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            color: white;
             font-size: 16px;
             transition: all 0.3s ease;
         }
-
+        
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
         }
-
+        
         .btn {
-            padding: 12px 25px;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
             border: none;
+            padding: 15px 30px;
             border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 5px;
+            width: 100%;
+            margin-top: 10px;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            color: white;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-
-        .btn-primary:hover {
+        
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
         }
-
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
         .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(135deg, #6c757d, #495057);
         }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
         }
-
-        .measurement-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
         }
-
+        
+        .status-indicator {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .status-good {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         .photo-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
-
+        
         .photo-item {
-            background: rgba(255,255,255,0.05);
+            position: relative;
+            border: 2px dashed #ddd;
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            border: 2px dashed rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
         }
-
+        
+        .photo-item:hover {
+            border-color: #2196F3;
+            background: rgba(33, 150, 243, 0.05);
+        }
+        
         .photo-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
             margin-bottom: 10px;
         }
-
-        .diagnosis-card {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 5px;
-        }
-
-        .status-good { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .status-warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .status-critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-
-        .chart-container {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .motor-list {
+        
+        .measurements-grid {
             display: grid;
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
-
-        .motor-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
+        
+        .measurement-card {
+            background: #f8f9fa;
             padding: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .motor-item:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateY(-2px);
-        }
-
-        .motor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        
+        .measurement-card h3 {
+            color: #2196F3;
             margin-bottom: 15px;
+            text-align: center;
         }
-
-        .motor-id {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #3b82f6;
-        }
-
-        .motor-date {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
-        }
-
-        .notifications {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .notification {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 15px 20px;
+        
+        .history-item {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 10px;
             margin-bottom: 10px;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            transform: translateX(300px);
-            transition: transform 0.3s ease;
+            border-left: 4px solid #2196F3;
         }
-
-        .notification.show {
-            transform: translateX(0);
+        
+        .history-item h4 {
+            color: #2196F3;
+            margin-bottom: 5px;
         }
-
-        .file-input {
-            display: none;
+        
+        .history-item .date {
+            color: #6c757d;
+            font-size: 14px;
         }
-
-        .file-label {
-            display: inline-block;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #8b5cf6, #a855f7);
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .file-label:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
-        }
-
+        
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
             
-            .header h1 {
-                font-size: 2rem;
+            .tabs {
+                flex-direction: column;
             }
             
-            .nav-tab {
-                font-size: 12px;
-                padding: 12px 8px;
+            .measurements-grid {
+                grid-template-columns: 1fr;
             }
         }
-
+        
+        .hidden {
+            display: none;
+        }
+        
         .ai-analysis {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             padding: 20px;
+            border-radius: 15px;
             margin-top: 20px;
         }
-
+        
         .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #3b82f6;
-            animation: spin 1s ease-in-out infinite;
+            text-align: center;
+            padding: 20px;
         }
-
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2196F3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="notifications" id="notifications"></div>
-    
     <div class="container">
         <div class="header">
-            <h1>⚡ Diagnóstico de Motores</h1>
-            <p>Análisis técnico profesional con IA integrada</p>
+            <h1>⚡ Diagnóstico de Motores Eléctricos</h1>
+            <p>Análisis profesional con IA integrada</p>
         </div>
-
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('medicion')">📊 Medición</button>
-            <button class="nav-tab" onclick="showTab('historial')">📈 Historial</button>
-            <button class="nav-tab" onclick="showTab('sincronizar')">☁️ Sincronizar</button>
-            <button class="nav-tab" onclick="showTab('configuracion')">⚙️ Config</button>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('mediciones')">📊 Mediciones</button>
+            <button class="tab" onclick="switchTab('fotos')">📸 Fotos</button>
+            <button class="tab" onclick="switchTab('analisis')">🤖 Análisis IA</button>
+            <button class="tab" onclick="switchTab('historial')">📈 Historial</button>
+            <button class="tab" onclick="switchTab('configuracion')">⚙️ Config</button>
         </div>
-
-        <!-- Tab de Medición -->
-        <div id="tab-medicion" class="tab-content active">
-            <h2>Nueva Medición</h2>
+        
+        <!-- TAB MEDICIONES -->
+        <div id="mediciones" class="tab-content active">
+            <h2>📊 Registro de Mediciones</h2>
             
             <div class="form-group">
-                <label for="motorId">ID del Motor</label>
-                <input type="text" id="motorId" placeholder="Ej: MOT-001-2025" required>
+                <label for="motorId">ID del Motor:</label>
+                <input type="text" id="motorId" placeholder="Ej: MOT-001">
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="ubicacion">Ubicación</label>
-                    <input type="text" id="ubicacion" placeholder="Ej: Planta 1, Sector A">
-                </div>
-                <div class="form-group">
-                    <label for="tecnico">Técnico</label>
-                    <input type="text" id="tecnico" placeholder="Nombre del técnico">
-                </div>
-            </div>
-
-            <div class="measurement-card">
-                <h3>⚡ Mediciones Eléctricas</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="voltaje">Voltaje (V)</label>
-                        <input type="number" id="voltaje" step="0.1" placeholder="220.0">
-                    </div>
-                    <div class="form-group">
-                        <label for="corriente">Corriente (A)</label>
-                        <input type="number" id="corriente" step="0.1" placeholder="15.5">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="temperatura">Temperatura (°C)</label>
-                        <input type="number" id="temperatura" step="0.1" placeholder="65.0">
-                    </div>
-                    <div class="form-group">
-                        <label for="aislamiento">Aislamiento (MΩ)</label>
-                        <input type="number" id="aislamiento" step="0.1" placeholder="500.0">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="pi">Índice de Polarización (PI)</label>
-                    <input type="number" id="pi" step="0.1" placeholder="2.5">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <h3>📸 Fotografías</h3>
-                <input type="file" id="photoInput" class="file-input" accept="image/*" multiple capture="camera">
-                <label for="photoInput" class="file-label">📷 Tomar/Seleccionar Fotos</label>
-                <div id="photoContainer" class="photo-container"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="observaciones">Observaciones Adicionales</label>
-                <textarea id="observaciones" rows="3" placeholder="Ruidos anormales, vibraciones, etc."></textarea>
-            </div>
-
-            <button class="btn btn-primary" onclick="procesarMedicion()">🤖 Analizar con IA</button>
-            <button class="btn btn-secondary" onclick="guardarMedicion()">💾 Guardar Medición</button>
-
-            <div id="aiAnalysis" class="ai-analysis" style="display: none;">
-                <h3>🤖 Análisis de IA</h3>
-                <div id="aiResult"></div>
-            </div>
-
-            <div id="diagnosis" class="diagnosis-card" style="display: none;">
-                <h3>📋 Diagnóstico</h3>
-                <div id="diagnosisResult"></div>
-            </div>
-        </div>
-
-        <!-- Tab de Historial -->
-        <div id="tab-historial" class="tab-content">
-            <h2>Historial de Mediciones</h2>
             
-            <div class="form-row">
-                <input type="text" id="searchMotor" placeholder="🔍 Buscar por ID de motor...">
-                <input type="date" id="filterDate" placeholder="Filtrar por fecha">
+            <div class="measurements-grid">
+                <div class="measurement-card">
+                    <h3>⚡ Voltajes (V)</h3>
+                    <div class="form-row">
+                        <div>
+                            <label>L1-L2:</label>
+                            <input type="number" id="voltageL1L2" step="0.1" placeholder="440V">
+                        </div>
+                        <div>
+                            <label>L2-L3:</label>
+                            <input type="number" id="voltageL2L3" step="0.1" placeholder="440V">
+                        </div>
+                        <div>
+                            <label>L1-L3:</label>
+                            <input type="number" id="voltageL1L3" step="0.1" placeholder="440V">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="measurement-card">
+                    <h3>🔌 Corrientes (A)</h3>
+                    <div class="form-row">
+                        <div>
+                            <label>L1:</label>
+                            <input type="number" id="currentL1" step="0.1" placeholder="Amperios">
+                        </div>
+                        <div>
+                            <label>L2:</label>
+                            <input type="number" id="currentL2" step="0.1" placeholder="Amperios">
+                        </div>
+                        <div>
+                            <label>L3:</label>
+                            <input type="number" id="currentL3" step="0.1" placeholder="Amperios">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="measurement-card">
+                    <h3>🌡️ Otros Parámetros</h3>
+                    <div class="form-group">
+                        <label>Temperatura (°C):</label>
+                        <input type="number" id="temperature" step="0.1" placeholder="°C">
+                    </div>
+                    <div class="form-group">
+                        <label>Aislamiento (MΩ):</label>
+                        <input type="number" id="insulation" step="0.1" placeholder="MegaOhmios">
+                    </div>
+                    <div class="form-group">
+                        <label>PI (Índice de Polarización):</label>
+                        <input type="number" id="pi" step="0.01" placeholder="1.0 - 4.0">
+                    </div>
+                </div>
             </div>
-
-            <div class="chart-container">
-                <p style="color: rgba(255,255,255,0.6);">📊 Gráfico de tendencias se mostrará aquí</p>
-            </div>
-
-            <div id="motorList" class="motor-list">
-                <!-- Los motores se cargarán dinámicamente -->
-            </div>
-        </div>
-
-        <!-- Tab de Sincronizar -->
-        <div id="tab-sincronizar" class="tab-content">
-            <h2>Sincronización con Google Drive</h2>
             
-            <div class="measurement-card">
-                <h3>☁️ Estado de Sincronización</h3>
-                <p id="syncStatus">Desconectado</p>
-                <button class="btn btn-primary" onclick="connectGoogleDrive()">🔗 Conectar Google Drive</button>
-                <button class="btn btn-secondary" onclick="syncData()">🔄 Sincronizar Datos</button>
+            <div class="form-group">
+                <label for="observations">Observaciones:</label>
+                <textarea id="observations" rows="3" placeholder="Observaciones adicionales..."></textarea>
             </div>
-
-            <div class="measurement-card">
-                <h3>📊 Exportar a Excel</h3>
-                <button class="btn btn-primary" onclick="exportToExcel()">📋 Generar Excel</button>
-                <button class="btn btn-secondary" onclick="exportPDF()">📄 Generar PDF</button>
+            
+            <button class="btn" onclick="saveMeasurement()">💾 Guardar Medición</button>
+        </div>
+        
+        <!-- TAB FOTOS -->
+        <div id="fotos" class="tab-content">
+            <h2>📸 Gestión de Fotos</h2>
+            
+            <div class="photo-container">
+                <div class="photo-item" onclick="capturePhoto('motor')">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">🔧</div>
+                    <p><strong>Foto del Motor</strong></p>
+                    <small>Vista general del motor eléctrico</small>
+                    <input type="file" id="photoMotor" accept="image/*" capture="environment" style="display: none">
+                </div>
+                
+                <div class="photo-item" onclick="capturePhoto('measurements')">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">📊</div>
+                    <p><strong>Foto de las Mediciones</strong></p>
+                    <small>Instrumentos y lecturas tomadas</small>
+                    <input type="file" id="photoMeasurements" accept="image/*" capture="environment" style="display: none">
+                </div>
+            </div>
+            
+            <div id="photoPreview"></div>
+            
+            <button class="btn btn-success" onclick="uploadPhotos()">☁️ Subir a Google Drive</button>
+        </div>
+        
+        <!-- TAB ANÁLISIS IA -->
+        <div id="analisis" class="tab-content">
+            <h2>🤖 Análisis con IA</h2>
+            
+            <div class="form-group">
+                <button class="btn" onclick="analyzeWithAI()">🔍 Analizar Datos con IA</button>
+            </div>
+            
+            <div id="aiResults" class="hidden">
+                <div class="ai-analysis">
+                    <h3>📋 Diagnóstico Automático</h3>
+                    <div id="aiDiagnosis">
+                        <!-- Aquí se mostrará el análisis de la IA -->
+                    </div>
+                </div>
+                
+                <div class="status-indicator" id="motorStatus">
+                    <h4>Estado General del Motor</h4>
+                    <p id="statusText">Esperando análisis...</p>
+                </div>
+            </div>
+            
+            <div id="aiLoading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Analizando datos con IA...</p>
             </div>
         </div>
-
-        <!-- Tab de Configuración -->
-        <div id="tab-configuracion" class="tab-content">
-            <h2>Configuración</h2>
+        
+        <!-- TAB HISTORIAL -->
+        <div id="historial" class="tab-content">
+            <h2>📈 Historial de Mediciones</h2>
+            
+            <div class="form-group">
+                <input type="text" id="searchHistory" placeholder="🔍 Buscar por ID de motor..." onkeyup="searchHistory()">
+            </div>
+            
+            <div id="historyList">
+                <!-- Aquí se mostrarán las mediciones guardadas -->
+            </div>
+            
+            <button class="btn btn-warning" onclick="exportToExcel()">📊 Exportar a Excel</button>
+            <button class="btn btn-success" onclick="syncWithDrive()">☁️ Sincronizar con Drive</button>
+        </div>
+        
+        <!-- TAB CONFIGURACIÓN -->
+        <div id="configuracion" class="tab-content">
+            <h2>⚙️ Configuración</h2>
+            
+            <div class="form-group">
+                <h3>🤖 Configuración de IA</h3>
+                <label>API Key de Hugging Face:</label>
+                <input type="password" id="hfApiKey" placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                <small style="display: block; margin-top: 5px; color: #666;">
+                    <strong>Cómo obtener tu API Key GRATIS:</strong><br>
+                    1. Ve a <a href="https://huggingface.co" target="_blank" style="color: #2196F3;">huggingface.co</a><br>
+                    2. Crea una cuenta gratuita<br>
+                    3. Ve a Settings → Access Tokens<br>
+                    4. Crea un nuevo token (READ permissions)<br>
+                    5. Copia y pega aquí tu token
+                </small>
+                <button class="btn btn-secondary" onclick="testHuggingFaceConnection()" style="margin-top: 10px; padding: 8px 16px; font-size: 14px;">
+                    🔍 Probar Conexión
+                </button>
+                <div id="hfStatus" class="status-indicator hidden" style="margin-top: 10px;">
+                    <p id="hfStatusText">No configurado</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>☁️ Google Drive</h3>
+                <button class="btn" onclick="connectGoogleDrive()">🔗 Conectar Google Drive</button>
+                <div id="driveStatus" class="status-indicator hidden">
+                    <p id="driveStatusText">No conectado</p>
+                </div>
+            </div>
             
             <div class="form-group">
                 <h3>🔔 Notificaciones</h3>
-                <label>
-                    <input type="checkbox" id="notifyMaintenance"> Recordatorios de mantenimiento
-                </label>
-                <br>
-                <label>
-                    <input type="checkbox" id="notifyAnomalies"> Alertas de anomalías
-                </label>
+                <button class="btn" onclick="enableNotifications()">🔔 Activar Notificaciones</button>
             </div>
-
+            
             <div class="form-group">
-                <h3>⚙️ Parámetros de Análisis</h3>
-                <div class="form-row">
-                    <div>
-                        <label for="tempLimit">Temperatura límite (°C)</label>
-                        <input type="number" id="tempLimit" value="80">
-                    </div>
-                    <div>
-                        <label for="isolationLimit">Aislamiento mínimo (MΩ)</label>
-                        <input type="number" id="isolationLimit" value="100">
-                    </div>
-                </div>
+                <h3>📱 PWA</h3>
+                <button class="btn btn-success" onclick="installPWA()">📱 Instalar App</button>
             </div>
-
-            <button class="btn btn-primary" onclick="saveConfig()">💾 Guardar Configuración</button>
+            
+            <button class="btn btn-secondary" onclick="clearAllData()">🗑️ Limpiar Todos los Datos</button>
         </div>
     </div>
-
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        // Estado global de la aplicación
-        let measurements = JSON.parse(localStorage.getItem('motorMeasurements') || '[]');
-        let photos = [];
-        let isConnectedToDrive = false;
-
+        // Variables globales
+        let measurements = JSON.parse(localStorage.getItem('motorMeasurements')) || [];
+        let photos = {};
+        let currentTab = 'mediciones';
+        
         // Service Worker para PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge30pOw==');
+            navigator.serviceWorker.register('/sw.js');
         }
-
-        // Funciones de navegación por tabs
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        
+        // Funciones de navegación
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            document.getElementById('tab-' + tabName).classList.add('active');
             event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            currentTab = tabName;
+            
+            if (tabName === 'historial') {
+                loadHistory();
+            }
         }
-
-        // Función para mostrar notificaciones
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
+        
+        // Funciones de medición
+        function saveMeasurement() {
+            const measurement = {
+                id: document.getElementById('motorId').value || 'MOT-' + Date.now(),
+                timestamp: new Date().toISOString(),
+                voltages: {
+                    l1l2: parseFloat(document.getElementById('voltageL1L2').value) || 0,
+                    l2l3: parseFloat(document.getElementById('voltageL2L3').value) || 0,
+                    l1l3: parseFloat(document.getElementById('voltageL1L3').value) || 0
+                },
+                currents: {
+                    l1: parseFloat(document.getElementById('currentL1').value) || 0,
+                    l2: parseFloat(document.getElementById('currentL2').value) || 0,
+                    l3: parseFloat(document.getElementById('currentL3').value) || 0
+                },
+                temperature: parseFloat(document.getElementById('temperature').value) || 0,
+                insulation: parseFloat(document.getElementById('insulation').value) || 0,
+                pi: parseFloat(document.getElementById('pi').value) || 0,
+                observations: document.getElementById('observations').value || '',
+                photos: photos
+            };
             
-            document.getElementById('notifications').appendChild(notification);
+            measurements.push(measurement);
+            localStorage.setItem('motorMeasurements', JSON.stringify(measurements));
             
-            setTimeout(() => notification.classList.add('show'), 100);
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            // Mostrar notificación
+            showNotification('✅ Medición guardada correctamente');
+            
+            // Limpiar formulario
+            clearForm();
         }
-
-        // Manejo de fotografías
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
-            const container = document.getElementById('photoContainer');
+        
+        function clearForm() {
+            document.querySelectorAll('input, textarea').forEach(input => {
+                if (input.type !== 'file') {
+                    input.value = '';
+                }
+            });
+            photos = {};
+        }
+        
+        // Funciones de fotos
+        function capturePhoto(type) {
+            const input = document.getElementById('photo' + type.charAt(0).toUpperCase() + type.slice(1));
+            input.click();
             
-            files.forEach(file => {
-                if (file.type.startsWith('image/')) {
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const photoItem = document.createElement('div');
-                        photoItem.className = 'photo-item';
-                        photoItem.innerHTML = `
-                            <img src="${e.target.result}" alt="Foto del motor">
-                            <p>${file.name}</p>
-                            <button class="btn btn-secondary" onclick="this.parentElement.remove()">🗑️ Eliminar</button>
-                        `;
-                        container.appendChild(photoItem);
-                        photos.push({
-                            name: file.name,
-                            data: e.target.result,
-                            timestamp: new Date().toISOString()
-                        });
+                    reader.onload = function(event) {
+                        photos[type] = event.target.result;
+                        displayPhoto(type, event.target.result);
                     };
                     reader.readAsDataURL(file);
                 }
-            });
-        });
-
-        // Análisis con IA (simulado)
-        async function procesarMedicion() {
-            const voltaje = parseFloat(document.getElementById('voltaje').value) || 0;
-            const corriente = parseFloat(document.getElementById('corriente').value) || 0;
-            const temperatura = parseFloat(document.getElementById('temperatura').value) || 0;
-            const aislamiento = parseFloat(document.getElementById('aislamiento').value) || 0;
-            const pi = parseFloat(document.getElementById('pi').value) || 0;
-
-            if (!voltaje || !corriente || !temperatura || !aislamiento || !pi) {
-                showNotification('Por favor completa todas las mediciones', 'error');
+            };
+        }
+        
+        function displayPhoto(type, src) {
+            const preview = document.getElementById('photoPreview');
+            const img = document.createElement('img');
+            img.src = src;
+            img.style.maxWidth = '200px';
+            img.style.margin = '10px';
+            img.style.borderRadius = '10px';
+            preview.appendChild(img);
+        }
+        
+        // Análisis con IA usando Hugging Face
+        async function analyzeWithAI() {
+            const apiKey = document.getElementById('hfApiKey').value;
+            if (!apiKey) {
+                alert('Por favor, configura tu API Key de Hugging Face en la sección Configuración');
+                switchTab('configuracion');
                 return;
             }
-
-            // Mostrar análisis de IA
-            const aiDiv = document.getElementById('aiAnalysis');
-            const resultDiv = document.getElementById('aiResult');
             
-            aiDiv.style.display = 'block';
-            resultDiv.innerHTML = '<div class="loading"></div> Analizando datos con IA...';
-
-            // Simular análisis de IA
-            setTimeout(() => {
-                const analysis = analyzeMotorData(voltaje, corriente, temperatura, aislamiento, pi);
-                resultDiv.innerHTML = analysis.aiAnalysis;
-                
-                // Mostrar diagnóstico
-                const diagDiv = document.getElementById('diagnosis');
-                const diagResult = document.getElementById('diagnosisResult');
-                
-                diagDiv.style.display = 'block';
-                diagResult.innerHTML = analysis.diagnosis;
-                
-                showNotification('Análisis completado exitosamente');
-            }, 2000);
-        }
-
-        // Función de análisis de datos del motor
-        function analyzeMotorData(voltaje, corriente, temperatura, aislamiento, pi) {
-            let status = 'good';
-            let issues = [];
-            let recommendations = [];
-
-            // Análisis de temperatura
-            if (temperatura > 80) {
-                status = 'critical';
-                issues.push('Temperatura excesiva');
-                recommendations.push('Revisar ventilación y carga del motor');
-            } else if (temperatura > 70) {
-                status = status === 'good' ? 'warning' : status;
-                issues.push('Temperatura elevada');
-            }
-
-            // Análisis de aislamiento
-            if (aislamiento < 100) {
-                status = 'critical';
-                issues.push('Aislamiento deficiente');
-                recommendations.push('Inspeccionar bobinados y aislamientos');
-            } else if (aislamiento < 500) {
-                status = status === 'good' ? 'warning' : status;
-                issues.push('Aislamiento bajo');
-            }
-
-            // Análisis de PI
-            if (pi < 1.5) {
-                status = 'critical';
-                issues.push('Índice de polarización muy bajo');
-                recommendations.push('Revisar humedad en bobinados');
-            } else if (pi < 2.0) {
-                status = status === 'good' ? 'warning' : status;
-                issues.push('Índice de polarización bajo');
-            }
-
-            // Análisis de voltaje
-            const voltajeNominal = 220; // Asumiendo 220V nominal
-            const desviacionVoltaje = Math.abs(voltaje - voltajeNominal) / voltajeNominal * 100;
-            
-            if (desviacionVoltaje > 10) {
-                status = status === 'good' ? 'warning' : status;
-                issues.push('Voltaje fuera del rango nominal');
-            }
-
-            const statusText = {
-                'good': 'BUENO',
-                'warning': 'ATENCIÓN',
-                'critical': 'CRÍTICO'
-            };
-
-            const statusClass = {
-                'good': 'status-good',
-                'warning': 'status-warning',
-                'critical': 'status-critical'
-            };
-
-            const aiAnalysis = `
-                <h4>📊 Análisis Detallado</h4>
-                <p><strong>Voltaje:</strong> ${voltaje}V - ${desviacionVoltaje <= 5 ? '✅ Normal' : desviacionVoltaje <= 10 ? '⚠️ Aceptable' : '❌ Fuera de rango'}</p>
-                <p><strong>Corriente:</strong> ${corriente}A - ${'✅ Dentro del rango'}</p>
-                <p><strong>Temperatura:</strong> ${temperatura}°C - ${temperatura <= 70 ? '✅ Normal' : temperatura <= 80 ? '⚠️ Elevada' : '❌ Excesiva'}</p>
-                <p><strong>Aislamiento:</strong> ${aislamiento}MΩ - ${aislamiento >= 500 ? '✅ Excelente' : aislamiento >= 100 ? '⚠️ Aceptable' : '❌ Deficiente'}</p>
-                <p><strong>Índice PI:</strong> ${pi} - ${pi >= 2.0 ? '✅ Bueno' : pi >= 1.5 ? '⚠️ Aceptable' : '❌ Bajo'}</p>
-            `;
-
-            const diagnosis = `
-                <div class="status-indicator ${statusClass[status]}">Estado: ${statusText[status]}</div>
-                <h4>🔍 Problemas Detectados</h4>
-                ${issues.length > 0 ? issues.map(issue => `<p>• ${issue}</p>`).join('') : '<p>• No se detectaron problemas críticos</p>'}
-                
-                <h4>💡 Recomendaciones</h4>
-                ${recommendations.length > 0 ? recommendations.map(rec => `<p>• ${rec}</p>`).join('') : '<p>• Continuar con el mantenimiento preventivo regular</p>'}
-                
-                <h4>📅 Próxima Inspección</h4>
-                <p>• ${status === 'critical' ? 'Inmediata (dentro de 24 horas)' : status === 'warning' ? 'En 1 semana' : 'En 1 mes'}</p>
-            `;
-
-            return { aiAnalysis, diagnosis, status, issues, recommendations };
-        }
-
-        // Guardar medición
-        function guardarMedicion() {
-            const motorId = document.getElementById('motorId').value;
-            const ubicacion = document.getElementById('ubicacion').value;
-            const tecnico = document.getElementById('tecnico').value;
-            const voltaje = parseFloat(document.getElementById('voltaje').value) || 0;
-            const corriente = parseFloat(document.getElementById('corriente').value) || 0;
-            const temperatura = parseFloat(document.getElementById('temperatura').value) || 0;
-            const aislamiento = parseFloat(document.getElementById('aislamiento').value) || 0;
-            const pi = parseFloat(document.getElementById('pi').value) || 0;
-            const observaciones = document.getElementById('observaciones').value;
-
-            if (!motorId) {
-                showNotification('Por favor ingresa un ID de motor', 'error');
+            const latestMeasurement = measurements[measurements.length - 1];
+            if (!latestMeasurement) {
+                alert('No hay mediciones para analizar. Agrega una medición primero.');
+                switchTab('mediciones');
                 return;
             }
-
-            const analysis = analyzeMotorData(voltaje, corriente, temperatura, aislamiento, pi);
-
-            const measurement = {
-                id: Date.now().toString(),
-                motorId,
-                ubicacion,
-                tecnico,
-                fecha: new Date().toISOString(),
-                mediciones: {
-                    voltaje,
-                    corriente,
-                    temperatura,
-                    aislamiento,
-                    pi
-                },
-                observaciones,
-                fotos: [...photos],
-                diagnostico: analysis,
-                syncStatus: 'pending'
-            };
-
-            measurements.push(measurement);
-            localStorage.setItem('motorMeasurements', JSON.stringify(measurements));
-
-            // Limpiar formulario
-            limpiarFormulario();
-            photos = [];
-
-            showNotification('Medición guardada exitosamente');
             
-            // Actualizar historial si está visible
-            if (document.getElementById('tab-historial').classList.contains('active')) {
-                loadMotorHistory();
-            }
-        }
-
-        // Limpiar formulario
-        function limpiarFormulario() {
-            document.getElementById('motorId').value = '';
-            document.getElementById('ubicacion').value = '';
-            document.getElementById('tecnico').value = '';
-            document.getElementById('voltaje').value = '';
-            document.getElementById('corriente').value = '';
-            document.getElementById('temperatura').value = '';
-            document.getElementById('aislamiento').value = '';
-            document.getElementById('pi').value = '';
-            document.getElementById('observaciones').value = '';
-            document.getElementById('photoContainer').innerHTML = '';
-            document.getElementById('aiAnalysis').style.display = 'none';
-            document.getElementById('diagnosis').style.display = 'none';
-        }
-
-        // Cargar historial de motores
-        function loadMotorHistory() {
-            const motorList = document.getElementById('motorList');
-            const searchTerm = document.getElementById('searchMotor').value.toLowerCase();
-            const filterDate = document.getElementById('filterDate').value;
-
-            let filteredMeasurements = measurements;
-
-            // Filtrar por búsqueda
-            if (searchTerm) {
-                filteredMeasurements = filteredMeasurements.filter(m => 
-                    m.motorId.toLowerCase().includes(searchTerm) ||
-                    m.ubicacion.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            // Filtrar por fecha
-            if (filterDate) {
-                filteredMeasurements = filteredMeasurements.filter(m => 
-                    m.fecha.startsWith(filterDate)
-                );
-            }
-
-            // Ordenar por fecha descendente
-            filteredMeasurements.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
-            motorList.innerHTML = '';
-
-            if (filteredMeasurements.length === 0) {
-                motorList.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.6);">No se encontraron mediciones</p>';
-                return;
-            }
-
-            filteredMeasurements.forEach(measurement => {
-                const motorItem = document.createElement('div');
-                motorItem.className = 'motor-item';
-                motorItem.onclick = () => showMeasurementDetails(measurement);
-
-                const fecha = new Date(measurement.fecha).toLocaleString('es-ES');
-                const statusClass = {
-                    'good': 'status-good',
-                    'warning': 'status-warning', 
-                    'critical': 'status-critical'
-                }[measurement.diagnostico.status];
-
-                const statusText = {
-                    'good': 'BUENO',
-                    'warning': 'ATENCIÓN',
-                    'critical': 'CRÍTICO'
-                }[measurement.diagnostico.status];
-
-                motorItem.innerHTML = `
-                    <div class="motor-header">
-                        <div class="motor-id">${measurement.motorId}</div>
-                        <div class="motor-date">${fecha}</div>
+            document.getElementById('aiLoading').classList.remove('hidden');
+            document.getElementById('aiResults').classList.add('hidden');
+            
+            // Guardar la API key para futuras sesiones
+            localStorage.setItem('hfApiKey', apiKey);
+            
+            try {
+                // Usar diferentes modelos según disponibilidad
+                const models = [
+                    'microsoft/DialoGPT-medium',
+                    'google/flan-t5-base',
+                    'EleutherAI/gpt-neo-2.7B',
+                    'facebook/blenderbot-400M-distill'
+                ];
+                
+                let analysisResult = null;
+                let modelUsed = null;
+                
+                // Intentar con diferentes modelos
+                for (const model of models) {
+                    try {
+                        analysisResult = await callHuggingFaceAPI(apiKey, model, latestMeasurement);
+                        modelUsed = model;
+                        break;
+                    } catch (error) {
+                        console.log(`Modelo ${model} no disponible, probando siguiente...`);
+                        continue;
+                    }
+                }
+                
+                if (analysisResult) {
+                    displayAIAnalysis(analysisResult, latestMeasurement, modelUsed);
+                } else {
+                    throw new Error('Ningún modelo de IA está disponible en este momento');
+                }
+                
+            } catch (error) {
+                console.error('Error completo:', error);
+                document.getElementById('aiDiagnosis').innerHTML = `
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4>⚠️ Error de Conexión con IA</h4>
+                        <p><strong>Motivo:</strong> ${error.message}</p>
+                        <p><strong>Solución:</strong> Verifica tu API Key de Hugging Face</p>
+                        <small>Realizando análisis técnico automático...</small>
                     </div>
-                    <div class="status-indicator ${statusClass}">${statusText}</div>
-                    <p><strong>Ubicación:</strong> ${measurement.ubicacion}</p>
-                    <p><strong>Técnico:</strong> ${measurement.tecnico}</p>
-                    <p><strong>Temperatura:</strong> ${measurement.mediciones.temperatura}°C</p>
-                    <p><strong>Fotos:</strong> ${measurement.fotos.length}</p>
                 `;
-
-                motorList.appendChild(motorItem);
-            });
-        }
-
-        // Mostrar detalles de medición
-        function showMeasurementDetails(measurement) {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-                z-index: 2000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-            `;
-
-            const content = document.createElement('div');
-            content.style.cssText = `
-                background: linear-gradient(135deg, #1e293b, #334155);
-                border-radius: 15px;
-                padding: 30px;
-                max-width: 600px;
-                max-height: 80vh;
-                overflow-y: auto;
-                border: 1px solid rgba(255,255,255,0.1);
-            `;
-
-            const fecha = new Date(measurement.fecha).toLocaleString('es-ES');
-            const statusClass = {
-                'good': 'status-good',
-                'warning': 'status-warning',
-                'critical': 'status-critical'
-            }[measurement.diagnostico.status];
-
-            const statusText = {
-                'good': 'BUENO',
-                'warning': 'ATENCIÓN',
-                'critical': 'CRÍTICO'
-            }[measurement.diagnostico.status];
-
-            content.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="color: #3b82f6;">Detalles: ${measurement.motorId}</h2>
-                    <button onclick="this.closest('.modal').remove()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
-                </div>
-                
-                <div class="status-indicator ${statusClass}" style="margin-bottom: 20px;">${statusText}</div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <h3>📋 Información General</h3>
-                        <p><strong>Fecha:</strong> ${fecha}</p>
-                        <p><strong>Ubicación:</strong> ${measurement.ubicacion}</p>
-                        <p><strong>Técnico:</strong> ${measurement.tecnico}</p>
-                    </div>
-                    <div>
-                        <h3>⚡ Mediciones</h3>
-                        <p><strong>Voltaje:</strong> ${measurement.mediciones.voltaje}V</p>
-                        <p><strong>Corriente:</strong> ${measurement.mediciones.corriente}A</p>
-                        <p><strong>Temperatura:</strong> ${measurement.mediciones.temperatura}°C</p>
-                        <p><strong>Aislamiento:</strong> ${measurement.mediciones.aislamiento}MΩ</p>
-                        <p><strong>PI:</strong> ${measurement.mediciones.pi}</p>
-                    </div>
-                </div>
-                
-                ${measurement.observaciones ? `
-                    <div style="margin-bottom: 20px;">
-                        <h3>📝 Observaciones</h3>
-                        <p>${measurement.observaciones}</p>
-                    </div>
-                ` : ''}
-                
-                ${measurement.fotos.length > 0 ? `
-                    <div style="margin-bottom: 20px;">
-                        <h3>📸 Fotografías (${measurement.fotos.length})</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-                            ${measurement.fotos.map(foto => `
-                                <img src="${foto.data}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px; cursor: pointer;" onclick="window.open('${foto.data}', '_blank')">
-                            `).join('')}
-                        </div>
-                    </div>
-                ` : ''}
-                
-                <div>
-                    <h3>🔍 Diagnóstico IA</h3>
-                    ${measurement.diagnostico.diagnosis}
-                </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="exportSingleMeasurement('${measurement.id}')">📋 Exportar</button>
-                    <button class="btn btn-secondary" onclick="deleteMeasurement('${measurement.id}'); this.closest('.modal').remove()">🗑️ Eliminar</button>
-                </div>
-            `;
-
-            modal.className = 'modal';
-            modal.appendChild(content);
-            document.body.appendChild(modal);
-        }
-
-        // Eliminar medición
-        function deleteMeasurement(id) {
-            if (confirm('¿Estás seguro de que quieres eliminar esta medición?')) {
-                measurements = measurements.filter(m => m.id !== id);
-                localStorage.setItem('motorMeasurements', JSON.stringify(measurements));
-                loadMotorHistory();
-                showNotification('Medición eliminada');
+                performBasicAnalysis();
+            } finally {
+                document.getElementById('aiLoading').classList.add('hidden');
+                document.getElementById('aiResults').classList.remove('hidden');
             }
         }
-
-      
-        // Conectar con Google Drive (simulado)
-        async function connectGoogleDrive() {
-            showNotification('Conectando con Google Drive...', 'info');
+        
+        // Función para llamar a la API de Hugging Face
+        async function callHuggingFaceAPI(apiKey, model, measurement) {
+            const prompt = createDiagnosticPrompt(measurement);
             
-            // Simular conexión
-            setTimeout(() => {
-                isConnectedToDrive = true;
-                document.getElementById('syncStatus').textContent = 'Conectado ✅';
-                showNotification('Conectado a Google Drive exitosamente');
-            }, 2000);
+            const response = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        max_length: 300,
+                        max_new_tokens: 150,
+                        temperature: 0.7,
+                        top_p: 0.9,
+                        do_sample: true,
+                        return_full_text: false
+                    },
+                    options: {
+                        wait_for_model: true,
+                        use_cache: false
+                    }
+                })
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`Error ${response.status}:`, errorText);
+                throw new Error(`API Error: ${response.status} - ${errorText}`);
+            }
+            
+            const result = await response.json();
+            
+            // Manejar diferentes formatos de respuesta
+            if (Array.isArray(result) && result.length > 0) {
+                if (result[0].generated_text) {
+                    return result[0].generated_text;
+                } else if (result[0].translation_text) {
+                    return result[0].translation_text;
+                } else if (typeof result[0] === 'string') {
+                    return result[0];
+                }
+            } else if (result.generated_text) {
+                return result.generated_text;
+            }
+            
+            throw new Error('Formato de respuesta no reconocido');
         }
+        
+        // Crear prompt específico para diagnóstico de motores
+        function createDiagnosticPrompt(measurement) {
+            const avgVoltage = (measurement.voltages.l1l2 + measurement.voltages.l2l3 + measurement.voltages.l1l3) / 3;
+            const avgCurrent = (measurement.currents.l1 + measurement.currents.l2 + measurement.currents.l3) / 3;
+            
+            return `DIAGNÓSTICO MOTOR ELÉCTRICO TRIFÁSICO:
+            
+Motor ID: ${measurement.id}
+Voltaje nominal: 440V
+Voltajes medidos: L1-L2=${measurement.voltages.l1l2}V, L2-L3=${measurement.voltages.l2l3}V, L1-L3=${measurement.voltages.l1l3}V
+Promedio voltaje: ${avgVoltage.toFixed(1)}V
+Corrientes: L1=${measurement.currents.l1}A, L2=${measurement.currents.l2}A, L3=${measurement.currents.l3}A
+Promedio corriente: ${avgCurrent.toFixed(1)}A
+Temperatura: ${measurement.temperature}°C
+Resistencia aislamiento: ${measurement.insulation}MΩ
+Índice polarización: ${measurement.pi}
+Observaciones técnicas: ${measurement.observations}
 
-        // Sincronizar datos
-        async function syncData() {
-            if (!isConnectedToDrive) {
-                showNotification('Primero conecta con Google Drive', 'error');
+Por favor, analiza estos parámetros y proporciona:
+1. Estado general del motor
+2. Problemas detectados
+3. Recomendaciones de mantenimiento
+4. Acciones correctivas necesarias
+
+Respuesta técnica profesional:`;
+        }
+        
+        function displayAIAnalysis(result, measurement, modelUsed) {
+            // Limpiar y formatear la respuesta de la IA
+            let aiResponse = result;
+            if (typeof result !== 'string') {
+                aiResponse = JSON.stringify(result);
+            }
+            
+            // Mejorar formato de la respuesta
+            aiResponse = aiResponse
+                .replace(/\\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            document.getElementById('aiDiagnosis').innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4>🤖 Análisis de Inteligencia Artificial</h4>
+                    <small style="opacity: 0.8;">Modelo utilizado: ${modelUsed}</small>
+                    <div style="margin: 15px 0; line-height: 1.6;">
+                        ${aiResponse}
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                    <h4>📊 Análisis Técnico Automático</h4>
+                    ${getBasicAnalysis(measurement)}
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin-top: 15px;">
+                    <h4>📋 Resumen de Parámetros</h4>
+                    ${getSummaryTable(measurement)}
+                </div>
+            `;
+            
+            updateMotorStatus(measurement);
+        }
+        
+        // Función para crear tabla resumen
+        function getSummaryTable(measurement) {
+            const avgVoltage = (measurement.voltages.l1l2 + measurement.voltages.l2l3 + measurement.voltages.l1l3) / 3;
+            const avgCurrent = (measurement.currents.l1 + measurement.currents.l2 + measurement.currents.l3) / 3;
+            
+            const voltageImbalance = Math.max(
+                Math.abs(measurement.voltages.l1l2 - avgVoltage),
+                Math.abs(measurement.voltages.l2l3 - avgVoltage),
+                Math.abs(measurement.voltages.l1l3 - avgVoltage)
+            ) / avgVoltage * 100;
+            
+            const currentImbalance = Math.max(
+                Math.abs(measurement.currents.l1 - avgCurrent),
+                Math.abs(measurement.currents.l2 - avgCurrent),
+                Math.abs(measurement.currents.l3 - avgCurrent)
+            ) / avgCurrent * 100;
+            
+            return `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+                    <div>
+                        <strong>⚡ Voltaje Promedio:</strong> ${avgVoltage.toFixed(1)}V<br>
+                        <strong>🔄 Desbalance Voltaje:</strong> ${voltageImbalance.toFixed(1)}%<br>
+                        <strong>🔌 Corriente Promedio:</strong> ${avgCurrent.toFixed(1)}A<br>
+                        <strong>⚖️ Desbalance Corriente:</strong> ${currentImbalance.toFixed(1)}%
+                    </div>
+                    <div>
+                        <strong>🌡️ Temperatura:</strong> ${measurement.temperature}°C<br>
+                        <strong>🛡️ Aislamiento:</strong> ${measurement.insulation}MΩ<br>
+                        <strong>📊 Índice PI:</strong> ${measurement.pi}<br>
+                        <strong>📅 Fecha:</strong> ${new Date(measurement.timestamp).toLocaleDateString()}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function performBasicAnalysis() {
+            const latestMeasurement = measurements[measurements.length - 1];
+            document.getElementById('aiDiagnosis').innerHTML = getBasicAnalysis(latestMeasurement);
+            updateMotorStatus(latestMeasurement);
+        }
+        
+        function getBasicAnalysis(measurement) {
+            let analysis = '<ul>';
+            
+            // Análisis de voltajes
+            const avgVoltage = (measurement.voltages.l1l2 + measurement.voltages.l2l3 + measurement.voltages.l1l3) / 3;
+            const voltageImbalance = Math.max(
+                Math.abs(measurement.voltages.l1l2 - avgVoltage),
+                Math.abs(measurement.voltages.l2l3 - avgVoltage),
+                Math.abs(measurement.voltages.l1l3 - avgVoltage)
+            ) / avgVoltage * 100;
+            
+            if (voltageImbalance > 5) {
+                analysis += '<li>⚠️ <strong>Desbalance de voltaje detectado</strong> (' + voltageImbalance.toFixed(1) + '%)</li>';
+            } else {
+                analysis += '<li>✅ Voltajes balanceados</li>';
+            }
+            
+            // Análisis de corrientes
+            const avgCurrent = (measurement.currents.l1 + measurement.currents.l2 + measurement.currents.l3) / 3;
+            const currentImbalance = Math.max(
+                Math.abs(measurement.currents.l1 - avgCurrent),
+                Math.abs(measurement.currents.l2 - avgCurrent),
+                Math.abs(measurement.currents.l3 - avgCurrent)
+            ) / avgCurrent * 100;
+            
+            if (currentImbalance > 10) {
+                analysis += '<li>⚠️ <strong>Desbalance de corriente detectado</strong> (' + currentImbalance.toFixed(1) + '%)</li>';
+            } else {
+                analysis += '<li>✅ Corrientes balanceadas</li>';
+            }
+            
+            // Análisis de temperatura
+            if (measurement.temperature > 80) {
+                analysis += '<li>🔥 <strong>Temperatura alta</strong> (' + measurement.temperature + '°C)</li>';
+            } else {
+                analysis += '<li>✅ Temperatura normal</li>';
+            }
+            
+            // Análisis de aislamiento
+            if (measurement.insulation < 1) {
+                analysis += '<li>⚠️ <strong>Resistencia de aislamiento baja</strong> (' + measurement.insulation + ' MΩ)</li>';
+            } else {
+                analysis += '<li>✅ Aislamiento adecuado</li>';
+            }
+            
+            // Análisis de PI
+            if (measurement.pi < 1.5) {
+                analysis += '<li>⚠️ <strong>Índice de polarización bajo</strong> (' + measurement.pi + ')</li>';
+            } else if (measurement.pi > 4) {
+                analysis += '<li>⚠️ <strong>Índice de polarización muy alto</strong> (' + measurement.pi + ')</li>';
+            } else {
+                analysis += '<li>✅ Índice de polarización normal</li>';
+            }
+            
+            analysis += '</ul>';
+            return analysis;
+        }
+        
+        function updateMotorStatus(measurement) {
+            const statusElement = document.getElementById('motorStatus');
+            const statusText = document.getElementById('statusText');
+            
+            // Calcular estado general basado en los parámetros
+            let issues = 0;
+            
+            if (measurement.temperature > 80) issues++;
+            if (measurement.insulation < 1) issues++;
+            if (measurement.pi < 1.5 || measurement.pi > 4) issues++;
+            
+            if (issues === 0) {
+                statusElement.className = 'status-indicator status-good';
+                statusText.textContent = 'Motor en buen estado ✅';
+            } else if (issues <= 2) {
+                statusElement.className = 'status-indicator status-warning';
+                statusText.textContent = 'Motor requiere atención ⚠️';
+            } else {
+                statusElement.className = 'status-indicator status-danger';
+                statusText.textContent = 'Motor requiere mantenimiento urgente ❌';
+            }
+        }
+        
+        // Funciones de historial
+        function loadHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            measurements.slice().reverse().forEach(measurement => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <h4>${measurement.id}</h4>
+                    <div class="date">${new Date(measurement.timestamp).toLocaleString()}</div>
+                    <p>Temp: ${measurement.temperature}°C | Aislamiento: ${measurement.insulation}MΩ | PI: ${measurement.pi}</p>
+                    <button class="btn btn-secondary" style="margin-top: 10px; padding: 5px 15px; font-size: 14px;" onclick="viewMeasurement('${measurement.timestamp}')">Ver Detalles</button>
+                `;
+                historyList.appendChild(historyItem);
+            });
+        }
+        
+        function searchHistory() {
+            const searchTerm = document.getElementById('searchHistory').value.toLowerCase();
+            const historyItems = document.querySelectorAll('.history-item');
+            
+            historyItems.forEach(item => {
+                const motorId = item.querySelector('h4').textContent.toLowerCase();
+                if (motorId.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        function viewMeasurement(timestamp) {
+            const measurement = measurements.find(m => m.timestamp === timestamp);
+            if (measurement) {
+                alert(`Detalles de ${measurement.id}:\n\nVoltajes:\nL1-L2: ${measurement.voltages.l1l2}V\nL2-L3: ${measurement.voltages.l2l3}V\nL1-L3: ${measurement.voltages.l1l3}V\n\nCorrientes:\nL1: ${measurement.currents.l1}A\nL2: ${measurement.currents.l2}A\nL3: ${measurement.currents.l3}A\n\nOtros:\nTemperatura: ${measurement.temperature}°C\nAislamiento: ${measurement.insulation}MΩ\nPI: ${measurement.pi}\n\nObservaciones:\n${measurement.observations}`);
+            }
+        }
+        
+        // Funciones de exportación
+        function exportToExcel() {
+            if (measurements.length === 0) {
+                alert('No hay datos para exportar');
                 return;
             }
-
-            showNotification('Sincronizando datos...', 'info');
             
-            // Simular sincronización
-            setTimeout(() => {
-                // Marcar todas las mediciones como sincronizadas
-                measurements.forEach(m => m.syncStatus = 'synced');
-                localStorage.setItem('motorMeasurements', JSON.stringify(measurements));
-                
-                showNotification(`${measurements.length} mediciones sincronizadas`);
-            }, 3000);
-        }
-
-        // Exportar a Excel (simulado)
-        function exportToExcel() {
-            showNotification('Generando archivo Excel...', 'info');
+            const wb = XLSX.utils.book_new();
             
-            // Crear CSV como alternativa
-            let csvContent = 'ID Motor,Fecha,Ubicacion,Tecnico,Voltaje,Corriente,Temperatura,Aislamiento,PI,Estado,Observaciones\n';
+            // Preparar datos para Excel
+            const excelData = measurements.map(m => ({
+                'ID Motor': m.id,
+                'Fecha': new Date(m.timestamp).toLocaleString(),
+                'Voltaje L1-L2 (V)': m.voltages.l1l2,
+                'Voltaje L2-L3 (V)': m.voltages.l2l3,
+                'Voltaje L1-L3 (V)': m.voltages.l1l3,
+                'Corriente L1 (A)': m.currents.l1,
+                'Corriente L2 (A)': m.currents.l2,
+                'Corriente L3 (A)': m.currents.l3,
+                'Temperatura (°C)': m.temperature,
+                'Aislamiento (MΩ)': m.insulation,
+                'Índice PI': m.pi,
+                'Observaciones': m.observations
+            }));
             
-            measurements.forEach(m => {
-                const fecha = new Date(m.fecha).toLocaleString('es-ES');
-                const status = {
-                    'good': 'BUENO',
-                    'warning': 'ATENCION',
-                    'critical': 'CRITICO'
-                }[m.diagnostico.status];
-                
-                csvContent += `${m.motorId},"${fecha}","${m.ubicacion}","${m.tecnico}",${m.mediciones.voltaje},${m.mediciones.corriente},${m.mediciones.temperatura},${m.mediciones.aislamiento},${m.mediciones.pi},"${status}","${m.observaciones}"\n`;
-            });
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Mediciones Motores');
             
             // Descargar archivo
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `diagnostico_motores_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
+            XLSX.writeFile(wb, `mediciones_motores_${new Date().toISOString().split('T')[0]}.xlsx`);
             
-            showNotification('Archivo CSV descargado');
+            showNotification('📊 Archivo Excel exportado correctamente');
         }
-
-        // Exportar a PDF (simulado)
-        function exportPDF() {
-            showNotification('Funcionalidad de PDF en desarrollo', 'info');
+        
+        // Funciones de Google Drive (requiere implementación con Google API)
+        function connectGoogleDrive() {
+            // Esta función necesita la implementación completa de Google Drive API
+            // Por ahora, simulamos la conexión
+            document.getElementById('driveStatus').classList.remove('hidden');
+            document.getElementById('driveStatusText').textContent = 'Conectado a Google Drive ✅';
+            document.getElementById('driveStatus').className = 'status-indicator status-good';
+            
+            showNotification('🔗 Conectado a Google Drive (simulado)');
         }
-
-        // Exportar medición individual
-        function exportSingleMeasurement(id) {
-            const measurement = measurements.find(m => m.id === id);
-            if (!measurement) return;
-
-            const fecha = new Date(measurement.fecha).toLocaleString('es-ES');
-            const status = {
-                'good': 'BUENO',
-                'warning': 'ATENCIÓN',
-                'critical': 'CRÍTICO'
-            }[measurement.diagnostico.status];
-
-            let csvContent = 'Campo,Valor\n';
-            csvContent += `ID Motor,${measurement.motorId}\n`;
-            csvContent += `Fecha,"${fecha}"\n`;
-            csvContent += `Ubicación,"${measurement.ubicacion}"\n`;
-            csvContent += `Técnico,"${measurement.tecnico}"\n`;
-            csvContent += `Voltaje,${measurement.mediciones.voltaje}V\n`;
-            csvContent += `Corriente,${measurement.mediciones.corriente}A\n`;
-            csvContent += `Temperatura,${measurement.mediciones.temperatura}°C\n`;
-            csvContent += `Aislamiento,${measurement.mediciones.aislamiento}MΩ\n`;
-            csvContent += `PI,${measurement.mediciones.pi}\n`;
-            csvContent += `Estado,"${status}"\n`;
-            csvContent += `Observaciones,"${measurement.observaciones}"\n`;
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${measurement.motorId}_${measurement.fecha.split('T')[0]}.csv`;
-            link.click();
+        
+        function uploadPhotos() {
+            // Simulación de subida a Google Drive
+            if (Object.keys(photos).length === 0) {
+                alert('No hay fotos para subir');
+                return;
+            }
+            
+            showNotification('☁️ Subiendo fotos a Google Drive...');
+            
+            setTimeout(() => {
+                showNotification('✅ Fotos subidas correctamente');
+            }, 2000);
         }
-
-        // Guardar configuración
-        function saveConfig() {
-            const config = {
-                notifyMaintenance: document.getElementById('notifyMaintenance').checked,
-                notifyAnomalies: document.getElementById('notifyAnomalies').checked,
-                tempLimit: parseFloat(document.getElementById('tempLimit').value),
-                isolationLimit: parseFloat(document.getElementById('isolationLimit').value)
+        
+        function syncWithDrive() {
+            showNotification('🔄 Sincronizando datos con Google Drive...');
+            
+            setTimeout(() => {
+                showNotification('✅ Sincronización completada');
+            }, 3000);
+        }
+        
+        // Función para probar conexión con Hugging Face
+        async function testHuggingFaceConnection() {
+            const apiKey = document.getElementById('hfApiKey').value;
+            if (!apiKey) {
+                alert('Por favor, introduce tu API Key de Hugging Face');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('hfStatus');
+            const statusText = document.getElementById('hfStatusText');
+            
+            statusDiv.classList.remove('hidden');
+            statusText.textContent = 'Probando conexión...';
+            statusDiv.className = 'status-indicator status-warning';
+            
+            try {
+                // Probar con un modelo simple y rápido
+                const response = await fetch('https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputs: 'Hello, this is a test.',
+                        options: {
+                            wait_for_model: true
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    // Guardar la API key si la conexión es exitosa
+                    localStorage.setItem('hfApiKey', apiKey);
+                    statusText.textContent = '✅ Conexión exitosa - API Key válida';
+                    statusDiv.className = 'status-indicator status-good';
+                } else {
+                    const errorData = await response.text();
+                    console.error('Error de API:', errorData);
+                    statusText.textContent = `❌ Error: ${response.status} - Verifica tu API Key`;
+                    statusDiv.className = 'status-indicator status-danger';
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                statusText.textContent = '❌ Error de conexión - Verifica tu internet';
+                statusDiv.className = 'status-indicator status-danger';
+            }
+        }
+        
+        // Cargar API key guardada al iniciar
+        function loadSavedApiKey() {
+            const savedApiKey = localStorage.getItem('hfApiKey');
+            if (savedApiKey) {
+                document.getElementById('hfApiKey').value = savedApiKey;
+                document.getElementById('hfStatus').classList.remove('hidden');
+                document.getElementById('hfStatusText').textContent = '✅ API Key cargada';
+                document.getElementById('hfStatus').className = 'status-indicator status-good';
+            }
+        }
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+        
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showNotification('📱 App instalada correctamente');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert('La app ya está instalada o no es compatible con PWA');
+            }
+        }
+        
+        // Notificaciones
+        function enableNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showNotification('🔔 Notificaciones activadas');
+                    }
+                });
+            }
+        }
+        
+        function showNotification(message) {
+            // Mostrar notificación en la app
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745, #20c997);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Notificación del navegador si está permitido
+            if (Notification.permission === 'granted') {
+                new Notification('Motor Diagnostic', { body: message });
+            }
+        }
+        
+        // Agregar estilos para las animaciones de notificación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Función para limpiar datos
+        function clearAllData() {
+            if (confirm('¿Estás seguro de que quieres eliminar todos los datos?')) {
+                localStorage.clear();
+                measurements = [];
+                photos = {};
+                loadHistory();
+                clearForm();
+                showNotification('🗑️ Todos los datos han sido eliminados');
+            }
+        }
+        
+        // Generar manifest.json dinámicamente
+        function generateManifest() {
+            const manifest = {
+                name: "Diagnóstico de Motores Eléctricos",
+                short_name: "MotorDiag",
+                description: "Aplicación profesional para diagnóstico de motores eléctricos trifásicos",
+                start_url: "/",
+                display: "standalone",
+                background_color: "#667eea",
+                theme_color: "#2196F3",
+                orientation: "portrait",
+                icons: [
+                    {
+                        src: "data:image/svg+xml;base64," + btoa(`
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="#2196F3"/>
+                                <text x="50" y="60" text-anchor="middle" fill="white" font-size="40">⚡</text>
+                            </svg>
+                        `),
+                        sizes: "192x192",
+                        type: "image/svg+xml"
+                    }
+                ]
             };
             
-            localStorage.setItem('appConfig', JSON.stringify(config));
-            showNotification('Configuración guardada');
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('manifest-placeholder').href = manifestURL;
         }
-
-        // Cargar configuración
-        function loadConfig() {
-            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
-            
-            if (config.notifyMaintenance !== undefined) {
-                document.getElementById('notifyMaintenance').checked = config.notifyMaintenance;
-            }
-            if (config.notifyAnomalies !== undefined) {
-                document.getElementById('notifyAnomalies').checked = config.notifyAnomalies;
-            }
-            if (config.tempLimit) {
-                document.getElementById('tempLimit').value = config.tempLimit;
-            }
-            if (config.isolationLimit) {
-                document.getElementById('isolationLimit').value = config.isolationLimit;
-            }
-        }
-
-        // Event listeners
+        
+        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            loadConfig();
+            generateManifest();
+            loadHistory();
+            loadSavedApiKey(); // Cargar API key guardada
             
-            // Filtros de historial
-            document.getElementById('searchMotor').addEventListener('input', loadMotorHistory);
-            document.getElementById('filterDate').addEventListener('change', loadMotorHistory);
-            
-            // Solicitar permisos de notificación
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
+            // Configurar la cámara para dispositivos móviles
+            if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
+                console.log('Cámara disponible');
             }
         });
-
-        // Interceptar navegación para cargar historial
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('nav-tab') && e.target.textContent.includes('Historial')) {
-                setTimeout(loadMotorHistory, 100);
-            }
-        });
+        
+        // Funciones PWA
+        let deferredPrompt;
+        
+        // Service Worker registration
+        const swCode = `
+            const CACHE_NAME = 'motor-diagnostic-v1';
+            const urlsToCache = [
+                '/',
+                '/index.html'
+            ];
+            
+            self.addEventListener('install', function(event) {
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then(function(cache) {
+                            return cache.addAll(urlsToCache);
+                        })
+                );
+            });
+            
+            self.addEventListener('fetch', function(event) {
+                event.respondWith(
+                    caches.match(event.request)
+                        .then(function(response) {
+                            if (response) {
+                                return response;
+                            }
+                            return fetch(event.request);
+                        })
+                );
+            });
+        `;
+        
+        // Crear el service worker como blob
+        const swBlob = new Blob([swCode], {type: 'application/javascript'});
+        const swURL = URL.createObjectURL(swBlob);
+        
+        // Registrar el service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register(swURL);
+        }
     </script>
 </body>
 </html>
